@@ -1,3 +1,6 @@
 *.wlf
 transcript
 *.mti
+/work/
+My CPU.mpf
+program.dat
