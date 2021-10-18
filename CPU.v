@@ -185,12 +185,49 @@ module IrohCPU(input clk, input memclk, input rst);
                         4'b0010 : begin //JEZ
                             //Don't need to do anything in this phase
                         end
+                        4'b0011 : begin //GET
+                            case (instruction[15:14])
+                                2'b00 : begin
+                                    case (instruction[1:0])
+                                        2'b00 : addr <= ab;
+                                        2'b01 : addr <= bb;
+                                        2'b10 : addr <= cb;
+                                        2'b11 : addr <= db;
+                                    endcase
+                                end
+                                2'b01 : begin
+                                    addr <= wordOut[7:0];
+                                end
+                            endcase
+                        end
+                        4'b0100 : begin //WRITE
+                            case (instruction[15:14])
+                                2'b00 : begin
+                                    case (instruction[13:12])
+                                        2'b00 : addr <= ab;
+                                        2'b01 : addr <= bb;
+                                        2'b10 : addr <= cb;
+                                        2'b11 : addr <= db;
+                                    endcase
+                                end
+                                2'b10 : begin
+                                    addr <= wordOut[7:0];
+                                end
+                            endcase 
+                            case (instruction[1:0])
+                                        2'b00 : newWord <= {8'b0, ab};
+                                        2'b01 : newWord <= {8'b0, bb};
+                                        2'b10 : newWord <= {8'b0, cb};
+                                        2'b11 : newWord <= {8'b0, db};
+                            endcase
+                            wEnable = 1'b1;
+                        end
                     endcase
                 end
                 EX2 : begin
                     if(instruction[11:8] != 4'b0001 && instruction[11:8] != 4'b0010) begin // if not jump
                         case(instruction[11:8])
-                            4'b1000, 4'b1001 : begin
+                            4'b1000, 4'b1001 : begin //ADD, SUB
                                 $display("Result: %b", result);
                                 case (instruction[13:12])
                                         2'b00 : ab <= result;
@@ -203,11 +240,19 @@ module IrohCPU(input clk, input memclk, input rst);
                                 of = overflow;
                                 sf <= sign;
                             end
-                            4'b0000 : begin
+                            4'b0000 : begin //MOV
                                 wEnable = 1'b0;
                             end
-                            4'b0011 : begin
-                                
+                            4'b0011 : begin //GET
+                                case (instruction[13:12])
+                                        2'b00 : ab <= wordOut[7:0];
+                                        2'b01 : bb <= wordOut[7:0];
+                                        2'b10 : cb <= wordOut[7:0];
+                                        2'b11 : db <= wordOut[7:0];
+                                endcase
+                            end
+                            4'b0100 : begin //WRITE
+                                wEnable = 1'b0;
                             end
                         endcase
 
