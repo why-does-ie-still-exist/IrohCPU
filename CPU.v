@@ -119,26 +119,21 @@ module IrohCPU(input clk, input memclk, input rst);
                     $display("instruction %b",instruction[11:8]);
                     case(instruction[11:8])
                         4'b1000, 4'b1001 : begin //ADD/SUB
-                            $display("adding or subbing");
                             isAdding <= ~instruction[8];
                             case (instruction[15:14])
                                 2'b00 : begin
-                                    $display("%b %b %b",instruction[15:14],destreg,srcreg);
                                     firstArg <= destreg;
                                     secondArg <= srcreg;
                                 end
                                 2'b01 : begin
-                                    $display("%b %b %b",instruction[15:14],destreg,srcreg);
                                     firstArg <= destreg;
                                     secondArg <= wordOut[7:0]; //from mem in decode
                                 end
                                 2'b10 : begin
-                                    $display("%b %b %b",instruction[15:14],destreg,srcreg);
                                     firstArg <= wordOut[7:0]; //from mem in decode
                                     secondArg <= srcreg;
                                 end
                                 2'b11 : begin
-                                    $display("%b %b %b",instruction[15:14],destreg,instruction[7:0]);
                                     firstArg <= destreg;
                                     secondArg <= instruction[7:0];
                                 end
@@ -175,9 +170,6 @@ module IrohCPU(input clk, input memclk, input rst);
                                     endcase
                                 end
                             endcase
-                        end
-                        4'b0011 : begin
-
                         end
                         4'b0001 : begin //JMP
                             //Don't need to do anything in this phase
@@ -228,7 +220,6 @@ module IrohCPU(input clk, input memclk, input rst);
                     if(instruction[11:8] != 4'b0001 && instruction[11:8] != 4'b0010) begin // if not jump
                         case(instruction[11:8])
                             4'b1000, 4'b1001 : begin //ADD, SUB
-                                $display("Result: %b", result);
                                 case (instruction[13:12])
                                         2'b00 : ab <= result;
                                         2'b01 : bb <= result;

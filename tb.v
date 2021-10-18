@@ -13,7 +13,7 @@ initial begin
     rst = 1'b1;
     clk = 1'b0;
     memclk = 1'b0;
-    #10
+    #40
     rst = 1'b0;
 end
 
