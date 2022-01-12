@@ -3,7 +3,7 @@
 
 This is a CPU written in Verilog intended for simulation. It has 256 words of addressable memory, although only 256 bytes of this is accessible to most instructions.
 
-I wrote it so I could learn how CPUs work at the register level as well as learning about digital logic. It is turing complete, although given the memory limitations it probably cna't implement many useful algorithms.
+I wrote it so I could learn how CPUs work at the register level as well as learning about digital logic. It is turing complete, although given the memory limitations it probably can't implement many useful algorithms.
 
 ### How to run
 
